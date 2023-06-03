@@ -16,9 +16,12 @@ func Routes(router *gin.Engine) {
 		c.String(http.StatusOK, "Welcome Easy Service")
 	})
 
-	userGroup := router.Group("/app/user")
+	userGroup := router.Group("/trade")
 
 	userInterceptor(userGroup)
-	userGroup.POST("/user/get_user_info", handler.GetUserInfo) //获取用户信息
+	userGroup.POST("/open_trade", handler.GetUserInfo)
+	userGroup.POST("/close_trade", handler.GetUserInfo)
+	userGroup.POST("/create_order", handler.GetUserInfo)
+	userGroup.POST("/cancel_order", handler.GetUserInfo)
 
 }
