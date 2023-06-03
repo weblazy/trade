@@ -1,0 +1,103 @@
+service:
+  projectName: trade
+  version: v1.0.0
+httpApis:
+- name: trade_api
+  comment: ""
+  host: 0.0.0.0
+  port: "80"
+  apis:
+  - prefix: /app/user
+    moduleName: user
+    handle:
+    - name: GetUserInfo
+      method: POST
+      requestParams:
+      - name: uid
+        type: int
+        comment: 用户ID
+        validate: required,min=1,max=100000
+      responseParams:
+      - name: detail
+        type: '*User'
+        comment: 用户详情
+        validate: ""
+      - name: list
+        type: '[]*User'
+        comment: 用户列表
+        validate: ""
+      comment: 获取用户信息
+  common_headers:
+  - key: Content-Type
+    value: application/json
+  params:
+    User:
+    - name: uid
+      type: int
+      comment: 用户ID
+      validate: ""
+    - name: name
+      type: string
+      comment: 用户名
+      validate: ""
+  mysqls: []
+cronJobs:
+- spec: '@every 30m'
+  job:
+    name: SyncUser
+    comment: 同步用户
+jobs:
+- name: InitUser
+  comment: 初始化默认用户
+grpcs:
+- name: orderrpc
+  host: 0.0.0.0
+  port: "80"
+  apis:
+  - prefix: /app/user
+    moduleName: user
+    handle:
+    - name: GetUserInfo
+      method: POST
+      requestParams:
+      - name: uid
+        type: int64
+        comment: 用户ID
+        validate: required,min=1,max=100000
+      responseParams:
+      - name: detail
+        type: User
+        comment: 用户详情
+        validate: ""
+      - name: list
+        type: repeated User
+        comment: 用户列表
+        validate: ""
+      comment: 获取用户信息
+    params:
+      User:
+      - name: uid
+        type: int64
+        comment: 用户ID
+        validate: ""
+      - name: name
+        type: string
+        comment: 用户名
+        validate: ""
+  common_headers:
+  - key: Content-Type
+    value: application/json
+  mysqls: []
+redisList:
+- name: default
+  index:
+    db0: 0
+mysqlList:
+- name: trade
+  models:
+  - name: user
+    auto: false
+    fields:
+    - column:id;primary_key;type:int AUTO_INCREMENT
+    - column:name;type:varchar(100) NOT NULL;default:'';comment:'用户名';unique_index
+    comment: 用户表
