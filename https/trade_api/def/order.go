@@ -1,5 +1,7 @@
 package def
 
+import "github.com/shopspring/decimal"
+
 type Action string
 
 func (a Action) String() string {
@@ -23,12 +25,15 @@ const (
 )
 
 type Order struct {
-	OrderId   string    `json:"order_id"`
-	OrderNo   string    `json:"order_no"`
-	Symbol    string    `json:"symbol"`
-	Action    Action    `json:"action"`
-	Side      Side      `json:"side"`
-	OrderType OrderType `json:"order_type"`
+	UserId    int64           `json:"user_id"` // 用户id
+	Pair      string          `json:"Pair"`    // 交易对
+	Price     decimal.Decimal `json:"price"`   // 价格
+	OrderId   string          `json:"order_id"`
+	OrderNo   string          `json:"order_no"`
+	Symbol    string          `json:"symbol"`
+	Action    Action          `json:"action"`
+	Side      Side            `json:"side"`
+	OrderType OrderType       `json:"order_type"`
 }
 
 type OrderType string
