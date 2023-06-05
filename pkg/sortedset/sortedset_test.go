@@ -3,7 +3,7 @@ package sortedset
 import "testing"
 
 func TestSortedSet_PopMin(t *testing.T) {
-	var set = Make()
+	var set = NewSortedSet()
 	set.Add("s1", 1)
 	set.Add("s2", 2)
 	set.Add("s3", 3)
