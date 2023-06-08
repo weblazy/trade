@@ -69,9 +69,9 @@ func (t *TradeEngine) onpenTrade(symbol string, price decimal.Decimal) error {
 			}
 			switch order.Action {
 			case def.ActionCreate:
-				worker.dealCreate(&order, book, &lastTradePrice)
+				worker.CreateOrder(order)
 			case def.ActionCancel:
-				worker.dealCancel(order)
+				worker.CancelOrder(order.OrderNo)
 			}
 		case task := <-tw.setChannel:
 			t.setTask(&task)
