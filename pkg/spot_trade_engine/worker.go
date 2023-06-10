@@ -1,7 +1,8 @@
-package trade_engine
+package spot_trade_engine
 
 import (
 	"strconv"
+	"sync/atomic"
 	"time"
 	"trade/https/trade_api/def"
 	"trade/pkg/cache"
@@ -11,15 +12,36 @@ import (
 )
 
 type Worker struct {
-	OrderChan chan *def.Order
-	OrderMap  map[string]*def.Order
-	BuyQueue  *sortedset.SortedSet //Element.Value->*Data
-	SellQueue *sortedset.SortedSet //Element.Value->*Data
+	OrderChan   chan *def.Order
+	OrderNoChan chan string
+	CloseChan   chan struct{}
+	OrderMap    map[string]*def.Order
+	BuyQueue    *sortedset.SortedSet //Element.Value->*Data
+	SellQueue   *sortedset.SortedSet //Element.Value->*Data
+	IsClosed    *atomic.Bool
 }
 
 type Data struct {
 	Key   string
 	Value *def.Order
+}
+
+func (w *Worker) Run() error {
+	w.IsClosed.Store(false)
+	for {
+		select {
+		case order, ok := <-w.OrderChan:
+			if !ok {
+				return OrderChanCloseErr
+			}
+			w.CreateOrder(order)
+		case orderNo, ok := <-w.OrderNoChan:
+			if !ok {
+				return OrderChanCloseErr
+			}
+			w.CancelOrder(orderNo)
+		}
+	}
 }
 
 func (w *Worker) CreateOrder(order *def.Order) {
@@ -42,6 +64,7 @@ func (w *Worker) CreateOrder(order *def.Order) {
 }
 
 func (w *Worker) AddLimitBuy(order *def.Order) {
+
 	trades := make([]*def.Trade, 0)
 	for {
 		// 获取卖方队列最小价格订单

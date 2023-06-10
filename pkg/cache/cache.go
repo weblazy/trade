@@ -10,8 +10,9 @@ func GetPrice(symbol string) decimal.Decimal {
 	return decimal.Decimal{}
 }
 
-func GetOrderIdsWithAction(symbol string) {
-
+func GetOrderList(symbol string) []*def.Order {
+	list := []*def.Order{}
+	return list
 }
 
 func SaveSymbol(symbol string) {

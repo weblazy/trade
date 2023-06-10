@@ -64,3 +64,49 @@ const (
 func (a OrderType) String() string {
 	return string(a)
 }
+
+type FutrueOrder struct {
+	UserId      int64           `json:"user_id"` // 用户id
+	Pair        string          `json:"Pair"`    // 交易对
+	Price       decimal.Decimal `json:"price"`   // 价格
+	OrderId     string          `json:"order_id"`
+	OrderNo     string          `json:"order_no"`
+	Symbol      string          `json:"symbol"`
+	Action      Action          `json:"action"`
+	Side        Side            `json:"side"`
+	OrderType   OrderType       `json:"order_type"`
+	LastAmount  decimal.Decimal `json:"last_amount"`  // 剩下的数量
+	TotalAmount decimal.Decimal `json:"total_amount"` // 总数量
+	TimeInForce string          `json:"f"`            // 订单有效时间,type为limit时才生效 GTC/IOC/FOK
+
+	Margin           decimal.Decimal `json:"margin"`   //保证金
+	Value            decimal.Decimal `json:"value"`    //价值
+	Leverage         decimal.Decimal `json:"leverage"` //倍数
+	LiquidationPrice decimal.Decimal `json:"value"`    //强平价
+	MarkPrice        decimal.Decimal `json:"value"`    //标价
+	EntryPrice       decimal.Decimal `json:"value"`    //入场价
+
+}
+
+type FutrueTrade struct {
+	UserId      int64           `json:"user_id"` // 用户id
+	Pair        string          `json:"Pair"`    // 交易对
+	Price       decimal.Decimal `json:"price"`   // 价格
+	OrderId     string          `json:"order_id"`
+	OrderNo     string          `json:"order_no"`
+	Symbol      string          `json:"symbol"`
+	Action      Action          `json:"action"`
+	Side        Side            `json:"side"`
+	OrderType   OrderType       `json:"order_type"`
+	LastAmount  decimal.Decimal `json:"last_amount"`  // 剩下的数量
+	TotalAmount decimal.Decimal `json:"total_amount"` // 总数量
+	TimeInForce string          `json:"f"`            // 订单有效时间,type为limit时才生效 GTC/IOC/FOK
+
+	Margin           decimal.Decimal `json:"margin"`   //保证金
+	Value            decimal.Decimal `json:"value"`    //价值
+	Leverage         decimal.Decimal `json:"leverage"` //倍数
+	LiquidationPrice decimal.Decimal `json:"value"`    //强平价
+	MarkPrice        decimal.Decimal `json:"value"`    //标价
+	EntryPrice       decimal.Decimal `json:"value"`    //入场价
+
+}
