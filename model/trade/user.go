@@ -10,7 +10,7 @@ var UserHandler = &User{}
 
 type User struct {
 	Id   int64  `json:"id" gorm:"column:id;primary_key;type:int AUTO_INCREMENT"`
-	Name string `json:"name" gorm:"column:name;type:varchar(100) NOT NULL;default:'';comment:'用户名';unique_index"`
+	Name string `json:"name" gorm:"column:name;type:varchar(100) NOT NULL;default:'';comment:'用户名';uniqueIndex"`
 }
 
 func (t *User) TableName() string {
